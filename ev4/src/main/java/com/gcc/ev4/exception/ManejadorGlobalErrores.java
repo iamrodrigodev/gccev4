@@ -1,5 +1,6 @@
 package com.gcc.ev4.exception;
 
+import com.gcc.ev4.log.MensajesLog;
 import com.gcc.ev4.response.RespuestaApi;
 import com.gcc.ev4.util.Mensajes;
 import org.slf4j.Logger;
@@ -26,11 +27,13 @@ public class ManejadorGlobalErrores {
 
     @ExceptionHandler(RecursoNoEncontradoException.class)
     public ResponseEntity<RespuestaApi<Void>> noEncontrado(RecursoNoEncontradoException ex) {
+        log.warn(MensajesLog.RECURSO_NO_ENCONTRADO, ex.getMessage());
         return responder(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(ReglaNegocioException.class)
     public ResponseEntity<RespuestaApi<Void>> reglaNegocio(ReglaNegocioException ex) {
+        log.warn(MensajesLog.REGLA_NEGOCIO, ex.getMessage());
         return responder(HttpStatus.CONFLICT, ex.getMessage());
     }
 
@@ -38,11 +41,13 @@ public class ManejadorGlobalErrores {
     public ResponseEntity<RespuestaApi<Void>> validacion(MethodArgumentNotValidException ex) {
         List<String> errores = ex.getBindingResult().getFieldErrors().stream()
                 .map(FieldError::getDefaultMessage).toList();
+        log.warn(MensajesLog.VALIDACION_FALLIDA, errores);
         return responder(HttpStatus.BAD_REQUEST, Mensajes.DATOS_INVALIDOS, errores);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<RespuestaApi<Void>> cuerpoInvalido() {
+    public ResponseEntity<RespuestaApi<Void>> cuerpoInvalido(HttpMessageNotReadableException ex) {
+        log.warn(MensajesLog.CUERPO_INVALIDO, ex.getMostSpecificCause().getMessage().lines().findFirst().orElse(""));
         return responder(HttpStatus.BAD_REQUEST, Mensajes.DATOS_INVALIDOS, List.of(Mensajes.EDAD_NO_ENTERA));
     }
 
@@ -68,13 +73,13 @@ public class ManejadorGlobalErrores {
 
     @ExceptionHandler({DataAccessException.class, TransactionException.class})
     public ResponseEntity<RespuestaApi<Void>> baseDatosNoDisponible(Exception ex) {
-        log.error("Error de base de datos", ex);
+        log.error(MensajesLog.ERROR_BASE_DATOS, ex);
         return responder(HttpStatus.SERVICE_UNAVAILABLE, Mensajes.SERVICIO_NO_DISPONIBLE);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<RespuestaApi<Void>> general(Exception ex) {
-        log.error("Error no controlado", ex);
+        log.error(MensajesLog.ERROR_NO_CONTROLADO, ex);
         return responder(HttpStatus.INTERNAL_SERVER_ERROR, Mensajes.ERROR_INTERNO);
     }
 

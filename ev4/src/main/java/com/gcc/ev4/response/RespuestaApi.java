@@ -1,28 +1,31 @@
 package com.gcc.ev4.response;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 import java.util.List;
 
 @Data
+@JsonPropertyOrder({"mensaje", "datos", "errores"})
 public class RespuestaApi<T> {
 
-    private boolean exito;
     private String mensaje;
     private T datos;
     private List<String> errores;
 
-    public static <T> RespuestaApi<T> ok(String mensaje, T datos) {
+    public static <T> RespuestaApi<T> of(String mensaje) {
         RespuestaApi<T> respuesta = new RespuestaApi<>();
-        respuesta.setExito(true);
         respuesta.setMensaje(mensaje);
+        return respuesta;
+    }
+
+    public static <T> RespuestaApi<T> of(String mensaje, T datos) {
+        RespuestaApi<T> respuesta = of(mensaje);
         respuesta.setDatos(datos);
         return respuesta;
     }
 
-    public static <T> RespuestaApi<T> error(String mensaje, List<String> errores) {
-        RespuestaApi<T> respuesta = new RespuestaApi<>();
-        respuesta.setExito(false);
-        respuesta.setMensaje(mensaje);
+    public static <T> RespuestaApi<T> conErrores(String mensaje, List<String> errores) {
+        RespuestaApi<T> respuesta = of(mensaje);
         respuesta.setErrores(errores);
         return respuesta;
     }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IAnimalService {
 
-    List<AnimalRespuesta> listar();
+    List<AnimalRespuesta> listar(boolean activo);
 
     AnimalRespuesta obtenerDetalle(Long id);
 

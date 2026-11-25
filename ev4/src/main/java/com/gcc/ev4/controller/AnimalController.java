@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
@@ -30,35 +31,35 @@ public class AnimalController {
     }
 
     @GetMapping
-    public ResponseEntity<RespuestaApi<List<AnimalRespuesta>>> listar() {
-        return ResponseEntity.ok(RespuestaApi.ok(Mensajes.ANIMALES_LISTADOS, animalService.listar()));
+    public ResponseEntity<RespuestaApi<List<AnimalRespuesta>>> listar(@RequestParam(defaultValue = "true") boolean activo) {
+        return ResponseEntity.ok(RespuestaApi.of(Mensajes.ANIMALES_LISTADOS, animalService.listar(activo)));
     }
 
     @GetMapping("/{animalId}")
     public ResponseEntity<RespuestaApi<AnimalRespuesta>> verDetalleAnimal(@PathVariable Long animalId) {
-        return ResponseEntity.ok(RespuestaApi.ok(Mensajes.ANIMAL_ENCONTRADO, animalService.obtenerDetalle(animalId)));
+        return ResponseEntity.ok(RespuestaApi.of(Mensajes.ANIMAL_ENCONTRADO, animalService.obtenerDetalle(animalId)));
     }
 
     @PostMapping
     public ResponseEntity<RespuestaApi<AnimalRespuesta>> registrar(@Valid @RequestBody AnimalSolicitud solicitud) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(RespuestaApi.ok(Mensajes.ANIMAL_REGISTRADO, animalService.registrar(solicitud)));
+                .body(RespuestaApi.of(Mensajes.ANIMAL_REGISTRADO, animalService.registrar(solicitud)));
     }
 
     @PutMapping("/{animalId}")
     public ResponseEntity<RespuestaApi<AnimalRespuesta>> actualizar(@PathVariable Long animalId,
                                                                    @Valid @RequestBody AnimalSolicitud solicitud) {
-        return ResponseEntity.ok(RespuestaApi.ok(Mensajes.ANIMAL_ACTUALIZADO, animalService.actualizar(animalId, solicitud)));
+        return ResponseEntity.ok(RespuestaApi.of(Mensajes.ANIMAL_ACTUALIZADO, animalService.actualizar(animalId, solicitud)));
     }
 
     @DeleteMapping("/{animalId}")
     public ResponseEntity<RespuestaApi<Void>> eliminar(@PathVariable Long animalId) {
         animalService.eliminar(animalId);
-        return ResponseEntity.ok(RespuestaApi.ok(Mensajes.ANIMAL_ELIMINADO, null));
+        return ResponseEntity.ok(RespuestaApi.of(Mensajes.ANIMAL_ELIMINADO));
     }
 
     @PatchMapping("/{animalId}/restaurar")
     public ResponseEntity<RespuestaApi<AnimalRespuesta>> restaurar(@PathVariable Long animalId) {
-        return ResponseEntity.ok(RespuestaApi.ok(Mensajes.ANIMAL_RESTAURADO, animalService.restaurar(animalId)));
+        return ResponseEntity.ok(RespuestaApi.of(Mensajes.ANIMAL_RESTAURADO, animalService.restaurar(animalId)));
     }
 }

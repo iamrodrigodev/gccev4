@@ -26,8 +26,8 @@ public class AnimalServiceImpl implements IAnimalService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<AnimalRespuesta> listar() {
-        return animalRepository.findByActivoTrueOrderByIdAsc().stream().map(animalMapper::aRespuesta).toList();
+    public List<AnimalRespuesta> listar(boolean activo) {
+        return animalRepository.findByActivoOrderByIdAsc(activo).stream().map(animalMapper::aRespuesta).toList();
     }
 
     @Override
@@ -59,19 +59,19 @@ public class AnimalServiceImpl implements IAnimalService {
     @Override
     @Transactional
     public AnimalRespuesta restaurar(Long id) {
-        Animal animal = animalRepository.findById(id).orElseThrow(() -> noEncontrado(id));
+        Animal animal = animalRepository.findById(id).orElseThrow(this::noEncontrado);
         if (animal.isActivo()) {
-            throw new ReglaNegocioException(Mensajes.ANIMAL_NO_ELIMINADO.formatted(id));
+            throw new ReglaNegocioException(Mensajes.ANIMAL_NO_ELIMINADO);
         }
         animal.setActivo(true);
         return animalMapper.aRespuesta(animal);
     }
 
     private Animal buscarActivo(Long id) {
-        return animalRepository.findByIdAndActivoTrue(id).orElseThrow(() -> noEncontrado(id));
+        return animalRepository.findByIdAndActivoTrue(id).orElseThrow(this::noEncontrado);
     }
 
-    private RecursoNoEncontradoException noEncontrado(Long id) {
-        return new RecursoNoEncontradoException(Mensajes.ANIMAL_NO_EXISTE.formatted(id));
+    private RecursoNoEncontradoException noEncontrado() {
+        return new RecursoNoEncontradoException(Mensajes.ANIMAL_NO_EXISTE);
     }
 }

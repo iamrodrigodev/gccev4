@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
-    List<Animal> findByActivoTrueOrderByIdAsc();
+    List<Animal> findByActivoOrderByIdAsc(boolean activo);
 
     Optional<Animal> findByIdAndActivoTrue(Long id);
 }

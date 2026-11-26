@@ -40,7 +40,7 @@ public class ManejadorGlobalErrores {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<RespuestaApi<Void>> validacion(MethodArgumentNotValidException ex) {
         List<String> errores = ex.getBindingResult().getFieldErrors().stream()
-                .map(FieldError::getDefaultMessage).toList();
+                .map((FieldError error) -> error.getDefaultMessage()).toList();
         log.warn(MensajesLog.VALIDACION_FALLIDA, errores);
         return responder(HttpStatus.BAD_REQUEST, Mensajes.DATOS_INVALIDOS, errores);
     }

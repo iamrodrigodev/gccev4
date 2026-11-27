@@ -1,9 +1,11 @@
 package com.gcc.ev4.dto;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
+@JsonPropertyOrder({"id", "nombre", "edad", "fechaRegistro"})
 public class AnimalRespuesta {
 
     private Long id;

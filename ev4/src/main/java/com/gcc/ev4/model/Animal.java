@@ -24,6 +24,9 @@ public class Animal {
     @Column(nullable = false, length = 100)
     private String nombre;
 
+    @Column(nullable = false, length = 50, columnDefinition = "varchar(50) not null default 'Sin especificar'")
+    private String especie;
+
     @Column(nullable = false)
     private Integer edad;
 

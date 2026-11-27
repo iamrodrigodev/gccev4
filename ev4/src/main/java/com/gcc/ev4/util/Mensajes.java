@@ -19,6 +19,8 @@ public final class Mensajes {
 
     public static final String NOMBRE_OBLIGATORIO = "Ingresa el nombre del animal";
     public static final String NOMBRE_MUY_LARGO = "El nombre puede tener como máximo 100 caracteres";
+    public static final String ESPECIE_OBLIGATORIA = "Ingresa la especie del animal";
+    public static final String ESPECIE_MUY_LARGA = "La especie puede tener como máximo 50 caracteres";
     public static final String EDAD_OBLIGATORIA = "Ingresa la edad del animal";
     public static final String EDAD_NEGATIVA = "La edad no puede ser negativa";
     public static final String EDAD_SUPERA_MAXIMO = "La edad debe ser de " + AnimalSolicitud.EDAD_MAXIMA + " años como máximo";

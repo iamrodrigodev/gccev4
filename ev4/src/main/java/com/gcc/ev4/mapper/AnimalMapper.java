@@ -16,6 +16,7 @@ public class AnimalMapper {
 
     public void actualizar(Animal animal, AnimalSolicitud solicitud) {
         animal.setNombre(solicitud.getNombre().trim());
+        animal.setEspecie(solicitud.getEspecie().trim());
         animal.setEdad(solicitud.getEdad());
     }
 
@@ -23,6 +24,7 @@ public class AnimalMapper {
         AnimalRespuesta respuesta = new AnimalRespuesta();
         respuesta.setId(animal.getId());
         respuesta.setNombre(animal.getNombre());
+        respuesta.setEspecie(animal.getEspecie());
         respuesta.setEdad(animal.getEdad());
         respuesta.setFechaRegistro(animal.getFechaRegistro());
         return respuesta;

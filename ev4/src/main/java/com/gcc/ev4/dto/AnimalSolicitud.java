@@ -17,6 +17,10 @@ public class AnimalSolicitud {
     @Size(max = 100, message = Mensajes.NOMBRE_MUY_LARGO)
     private String nombre;
 
+    @NotBlank(message = Mensajes.ESPECIE_OBLIGATORIA)
+    @Size(max = 50, message = Mensajes.ESPECIE_MUY_LARGA)
+    private String especie;
+
     @NotNull(message = Mensajes.EDAD_OBLIGATORIA)
     @Min(value = 0, message = Mensajes.EDAD_NEGATIVA)
     @Max(value = EDAD_MAXIMA, message = Mensajes.EDAD_SUPERA_MAXIMO)

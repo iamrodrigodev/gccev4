@@ -31,12 +31,12 @@ public class AnimalController {
     }
 
     @GetMapping
-    public ResponseEntity<RespuestaApi<List<AnimalRespuesta>>> listar(@RequestParam(defaultValue = "true") boolean activo) {
+    public ResponseEntity<RespuestaApi<List<AnimalRespuesta>>> listar(@RequestParam(name = "activo", defaultValue = "true") boolean activo) {
         return ResponseEntity.ok(RespuestaApi.of(Mensajes.ANIMALES_LISTADOS, animalService.listar(activo)));
     }
 
     @GetMapping("/{animalId}")
-    public ResponseEntity<RespuestaApi<AnimalRespuesta>> verDetalleAnimal(@PathVariable Long animalId) {
+    public ResponseEntity<RespuestaApi<AnimalRespuesta>> verDetalleAnimal(@PathVariable("animalId") Long animalId) {
         return ResponseEntity.ok(RespuestaApi.of(Mensajes.ANIMAL_ENCONTRADO, animalService.obtenerDetalle(animalId)));
     }
 
@@ -47,19 +47,19 @@ public class AnimalController {
     }
 
     @PutMapping("/{animalId}")
-    public ResponseEntity<RespuestaApi<AnimalRespuesta>> actualizar(@PathVariable Long animalId,
+    public ResponseEntity<RespuestaApi<AnimalRespuesta>> actualizar(@PathVariable("animalId") Long animalId,
                                                                    @Valid @RequestBody AnimalSolicitud solicitud) {
         return ResponseEntity.ok(RespuestaApi.of(Mensajes.ANIMAL_ACTUALIZADO, animalService.actualizar(animalId, solicitud)));
     }
 
     @DeleteMapping("/{animalId}")
-    public ResponseEntity<RespuestaApi<Void>> eliminar(@PathVariable Long animalId) {
+    public ResponseEntity<RespuestaApi<Void>> eliminar(@PathVariable("animalId") Long animalId) {
         animalService.eliminar(animalId);
         return ResponseEntity.ok(RespuestaApi.of(Mensajes.ANIMAL_ELIMINADO));
     }
 
     @PatchMapping("/{animalId}/restaurar")
-    public ResponseEntity<RespuestaApi<AnimalRespuesta>> restaurar(@PathVariable Long animalId) {
+    public ResponseEntity<RespuestaApi<AnimalRespuesta>> restaurar(@PathVariable("animalId") Long animalId) {
         return ResponseEntity.ok(RespuestaApi.of(Mensajes.ANIMAL_RESTAURADO, animalService.restaurar(animalId)));
     }
 }
